@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ASHUTOSH1616's Note-Making WebSite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grandstander:ital@1&display=swap" rel="stylesheet">
+    <style type="text/css">
+      body {
+        text-align: center;
+        background-image: url("https://images.pexels.com/photos/630754/autumn-orange-nature-red-630754.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      h1 {
+        background: rgb(0,0,255);
+        background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0.4) 100%);
+        font-family: raleway;
+        font-weight: 800;
+        font-size: 35px;
+        text-transform: uppercase;
+      }
+      textarea {
+        display: block;
+        margin: auto;
+        font-family: 'Grandstander', cursive;
+        font-size: 19px;
+        border: 2px solid #999;
+        columns: 200px;
+        padding: 12px 20px;
+        border-radius: 5px;
+        background-color: rgba(255,255,240,0.8);
+      }
+      input[type=button]{
+        border-radius: 12px;
+        padding: 10px 20px;
+        margin: 4px 20px;
+        color: white;
+        background-color: rgba(15,15,15,0.5);
+      }
+      a:hover{
+        color: blue;
+        text-decoration: underline;
+      }
+      #saveBtn:hover {
+        background-color: lightgreen;
+      }
+      #clearBtn:hover {
+        background-color: lightpink;
+      }
+      #showNotesBtn:hover {
+        background-color: skyblue;
+      }
+      .detailsClass {
+        background: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        font-family: 'Grandstander', cursive;
+        display: none;
+        height: 100%;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 10000;
+      }
+      .detailsClass .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+      .detailsClass > div {
+        background-color: rgb(255,255,240);
+        box-shadow: 10px 10px 60px #222;
+        display: inline-block;
+        height: auto;
+        max-width: 551px;
+        min-height: 100px;
+        vertical-align: middle;
+        width: 60%;
+        position: relative;
+        border-radius: 8px;
+        padding: 15px 5%;
+      }
+      .popupCloseButton {
+        background-color: red;
+        border: 3px solid #999;
+        border-radius: 50px;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 25px;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+      }
+      .popupCloseButton:hover {
+        background-color: rgb(180,0,0);
+      }
+      .summaryClass {
+        cursor: pointer;
+        font-size: 20px;
+        margin: 20px;
+        display: inline-block;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span id="pageTitle">Ashutosh/Jaiswal</span></h1>
+    <h2><u>Enter Your Notes Here</u> :</h2>
+    <form>
+      <!--TEXT AREA INPUT
+
+        Ashutosh Jaiswal;    2019UCO1616;    COE - 2;    WEB TECHNOLOGY ASSIGNMENT.    
+        Functionality/Working: 
+        1} Type the notes in this text-area. 
+        2} Use the "Save" button to save the notes.
+        3} Click on "Show Notes" button to show/hide condensed view of the notes.
+        4} When the condensed view is visible then Click on it to view Full-Notes on HOVER OVERLAY.
+        5} Use the "Clear" Button to erase everything from the Text-area.
+      -->
+      <textarea
+        placeholder="Enter Something !!!" id="noteTextField" rows="15" cols="69" name="Notes"></textarea>
+      <br/><br>
+      <input type="button" value="Save" id="saveBtn" onclick="javascript:save();"/>
+      <input type="button" value="Clear" id="clearBtn" onclick="javascript:eraseText();"/>
+      <input type="button" id="showNotesBtn" class="addMore" value="Show Notes" />
+    </form>
+    <a class="summaryClass" id="summary"></a>
+
+    <div class="detailsClass">
+      <span class="helper"></span>
+      <div>
+        <div class="popupCloseButton">&times;</div>
+        <p id="details"></p>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
+  </script>
+  <script>
+    var text;
+    var show = false;
+    function eraseText() {
+      document.getElementById("noteTextField").value = "";
+      document.getElementById("summary").innerHTML = "";
+      document.getElementById("details").innerHTML = "";
+    }
+    function save() {
+      text = document.getElementById("noteTextField").value;
+      document.getElementById("summary").innerHTML =
+        text.substring(0, 7) + "... " + "(Click Here to Expand)";
+      document.getElementById("details").innerHTML = text;
+    }
+    $(window).load(function () {
+      $(".summaryClass").hide();
+      $(".summaryClass").click(function () {
+        $(".detailsClass").show();
+      });
+      $(".detailsClass").click(function () {
+        $(".detailsClass").hide();
+      });
+      $(".popupCloseButton").click(function () {
+        $(".detailsClass").hide();
+      });
+      $(".addMore").click(function () {
+        if (show == true) {
+          $(".summaryClass").hide();
+          show = false;
+        } else {
+          $(".summaryClass").show();
+          show = true;
+        }
+      });
+    });
+  </script>
+</html>
